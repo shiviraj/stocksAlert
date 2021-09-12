@@ -5,10 +5,10 @@ const FormData = require('form-data');
 const createMessage = stock => {
   return `<b>Symbol: ${stock.symbol}</b>
 Type: <b>${stock.type}</b>
-Cost: <b>${stock.cost}</b>
-StopLoss: <b>${stock.stopLoss}</b>
-Risk: <b>${stock.risk}</b>
-Date: <b>${stock.date}</b>`
+Cost: <b>${stock.cost.toFixed(2)}</b>
+StopLoss: <b>${stock.stopLoss.toFixed(2)}</b>
+Risk: <b>${stock.risk.toFixed(2)}</b>
+Date: <b>${new Date(stock.date).toJSON().slice(0, 10)}</b>`
 };
 
 const Notifier = {

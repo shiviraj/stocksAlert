@@ -11,5 +11,5 @@ const TradeableStockSchema = new mongoose.Schema({
   isAlertSent: Boolean
 });
 
-const TradeableStock = mongoose.model('Post', TradeableStockSchema);
+const TradeableStock = mongoose.model('tradeablestocks', TradeableStockSchema);
 module.exports = {TradeableStock};

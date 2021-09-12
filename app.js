@@ -54,7 +54,7 @@ const main = async () => {
       console.log("screenshot taken", stock.symbol)
       await takeScreenshot(stock.symbol)
       await Notifier.notify(stock)
-      await TradeableStock.findOneAndUpdate(stock, {isAlertSent: true})
+      await TradeableStock.findByIdAndUpdate(stock._id, {isAlertSent: true})
     }
   } catch (error) {
     await screenshot({path: "images/error.png"})

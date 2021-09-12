@@ -5,7 +5,7 @@ require("./src/db/connect")
 const app = express()
 
 app.get("/", async (req, res) => {
-  await main()
+  main()
   res.send({status: "OK"})
 })
 
