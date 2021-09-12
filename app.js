@@ -1,5 +1,4 @@
 const {openBrowser, goto, click, write, $, listItem, clear, toRightOf, screenshot, closeBrowser} = require("taiko")
-require("./src/db/connect")
 const {TradeableStock} = require("./src/model/tradeableStock")
 const Notifier = require("./src/service/Notifier");
 
@@ -32,25 +31,30 @@ const takeScreenshot = async (symbol) => {
   await click(listItem(symbol));
   await oneSec()
   await oneSec()
-  await screenshot({path: `images/${symbol.toLowerCase()}.png`});
+  await screenshot({path: `images/${symbol}.png`});
 };
 
 const main = async () => {
   try {
     await openBrowser();
+    console.log("Browser Open")
     await goto(
       'https://trade.angelbroking.com/portfolio/chart?cocode=25902&exch=NSE&symbol=CHALET&ntoken=8546&label=CHALET&lotsize=1&period=&views=&display=&defaultPeriod='
     );
+    console.log("Visited Chart website")
     await click('6M');
     await addSMMA(5);
     await addSMMA(22);
     await addSMMA(60);
     await addSMMA(200);
 
+    console.log("set SMMA")
     const stocks = await TradeableStock.find({isAlertSent: false})
     for (const stock of stocks) {
+      console.log("screenshot taken", stock.symbol)
       await takeScreenshot(stock.symbol)
       await Notifier.notify(stock)
+      await TradeableStock.findOneAndUpdate(stock, {isAlertSent: true})
     }
   } catch (error) {
     await screenshot({path: "images/error.png"})
@@ -61,4 +65,4 @@ const main = async () => {
   }
 }
 
-main().then(r => ({}));
+module.exports = main
